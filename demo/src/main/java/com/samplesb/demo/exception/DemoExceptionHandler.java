@@ -1,6 +1,8 @@
 package com.samplesb.demo.exception;
 
 
+import com.samplesb.demo.repository.AppointmentsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -8,6 +10,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class DemoExceptionHandler {
+
+    @Autowired
+    AppointmentsRepository appointmentsRepository;
 
     @ExceptionHandler(MyException.class)
     public ResponseEntity<ErrorMessage> handleMyException(MyException myException){
