@@ -1,4 +1,4 @@
-## ViewDocs
+## ViewDocsAPI Project
 
 ### This application will let us to navigate through folders and files in Google Drive via REST API calls
 
