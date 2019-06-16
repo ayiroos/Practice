@@ -1,0 +1,85 @@
+<html>
+
+<head>
+    <title>Upload file</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script>
+
+        async function uploadFile() {
+
+            var input = document.getElementById("selectedFile");
+
+            var folderPath = document.getElementById("uploadFolderLocation").value;
+
+            if (!folderPath) {
+                window.alert("Please specify folder path");
+                return;
+            }
+
+            var file = input.files[0];
+
+            if (!file) {
+                window.alert("Please choose a file to upload");
+                return;
+            }
+
+            
+
+            var formData = new FormData();
+            formData.append('file', file, file.name);
+            // formData.append('user', 'hubot');
+
+            // await console.log(file);
+            // https://staging.cloud-elements.com/elements/api-v2/files
+
+            const response = await fetch(`http://localhost:9000/postFiles?path=${folderPath}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'User 7awuPTubPWe+aiO2CcHfA/4+InEfnEx8SWAFLoTVoaI=, Organization 339c4fd6d608536ba69532ee256b9018, Element afwSgFLa01IPVpJFoCM62N2bYy+tXOKmTxrRDnw2Gis='
+                },
+                body: formData
+            });
+
+            var responseJson = await response.json();
+
+            let statusCode = response.status;
+            if (statusCode < 200 || statusCode >= 300) {
+                window.alert(responseJson.message || `Unable to upload the file to specified folder path '${folderPath}'`)
+                return;
+            }
+
+            window.alert(`File successfully uploaded:\nFile ID is ${responseJson.id}\nFile Path: ${responseJson.path}`)
+        }
+    </script>
+
+
+</head>
+
+<body>
+
+    <br>
+    <div style="text-align:center">
+        <a class="w3-xxlarge" href="./index.html">
+            <i class="fa fa-home"></i>
+        </a>
+    </div>
+
+    <br>
+    <br>
+    <div style="text-align:center">
+        <input id="uploadFolderLocation" style="width: 720px" type="text"
+            placeholder="Please enther a absolute file path destinatin to upload the file For example: /test/fileName.ext" />
+        <br>
+        <br>
+        <input id="selectedFile" type="file" name="myFile"> 
+        <br>
+        <br>
+        <input type="button" value="Upload" onclick="uploadFile()" />
+    </div>
+</body>
+
+</html>
