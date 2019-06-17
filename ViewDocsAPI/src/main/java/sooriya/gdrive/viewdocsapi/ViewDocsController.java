@@ -25,8 +25,6 @@ import java.util.Map;
 public class ViewDocsController {
 
     public static final String CE_URL = "https://staging.cloud-elements.com/elements/api-v2";
-    //    private static final String authHeader = "User qEDaQpt4I8VMiNqO5Alv/02/jJopo34wONOB4+3xbK0=, Organization 43552db6de425ad3c390d61b2fd95458, " +
-    //            "Element 0GyyX1o84praIZQHJfa0kcnDCvsdNbjhQdHDH/udoH4=";
 
     @RequestMapping(value = "/contents", method = RequestMethod.GET)
     public String viewFolders(@RequestParam String path, @RequestHeader(value = "Authorization") String authHeader) {
@@ -36,7 +34,7 @@ public class ViewDocsController {
 
         //curl -X GET "https://staging.cloud-elements.com/elements/api-v2/folders/contents?path=%2FMyDir"
         // -H "accept: application/json" -H
-        // "Authorization: User 7awuPTubPWe+aiO2CcHfA/4+InEfnEx8SWAFLoTVoaI=, Organization 339c4fd6d608536ba69532ee256b9018, Element afwSgFLa01IPVpJFoCM62N2bYy+tXOKmTxrRDnw2Gis="
+
         try {
 
             Map<String, String> headers = new HashMap<>();
@@ -86,7 +84,7 @@ public class ViewDocsController {
                     .headers(headers)
                     .asBinary();
             if (response == null) {
-                throw new ViewDocsException(HttpStatus.BAD_REQUEST, "Failed to fetch the specified folder contents");
+                throw new ViewDocsException(HttpStatus.BAD_REQUEST, "Failed to download the file");
             }
 
             int statusCode = response.getStatus();
@@ -98,7 +96,7 @@ public class ViewDocsController {
             IOUtils.copyLarge(response.getBody(), httpServletResponse.getOutputStream());
 
         } catch (UnirestException | IOException e) {
-            throw new ViewDocsException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to fetch the specified folder contents");
+            throw new ViewDocsException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to download the file");
         }
 
 
@@ -129,7 +127,7 @@ public class ViewDocsController {
             HttpResponse<String> response = multiPartRequestBody.asString();
 
             if (response == null) {
-                throw new ViewDocsException(HttpStatus.BAD_REQUEST, "Failed to fetch the specified folder contents");
+                throw new ViewDocsException(HttpStatus.BAD_REQUEST, "Failed to upload the file");
             }
 
             int statusCode = response.getStatus();
@@ -145,7 +143,7 @@ public class ViewDocsController {
 
         } catch (Exception ue) {
 
-            throw new ViewDocsException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to upload file");
+            throw new ViewDocsException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to upload the file");
         }
 
 

@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "b62e1be3-b2ec-4d94-b0c1-a75c2209ea7a",
+		"name": "DocViewerSpringAPIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/contents",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ngrok}}/contents?path=/MyDir1",
+					"host": [
+						"{{ngrok}}"
+					],
+					"path": [
+						"contents"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "/MyDir1"
+						}
+					]
+				},
+				"description": "It will fetch google drive's folder contents"
+			},
+			"response": []
+		},
+		{
+			"name": "/fetchFiles",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ngrok}}/fetchFiles?path=/MyDir1/rrr.txt",
+					"host": [
+						"{{ngrok}}"
+					],
+					"path": [
+						"fetchFiles"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "/MyDir1/rrr.txt"
+						}
+					]
+				},
+				"description": "It will download the files from Google drive's folder"
+			},
+			"response": []
+		},
+		{
+			"name": "/postFiles",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"value": null,
+							"type": "file"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ngrok}}/postFiles?path=/MyDir1/abc.txt",
+					"host": [
+						"{{ngrok}}"
+					],
+					"path": [
+						"postFiles"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "/MyDir1/abc.txt"
+						}
+					]
+				},
+				"description": "It will upload a file to google drive's folder"
+			},
+			"response": []
+		}
+	]
+}

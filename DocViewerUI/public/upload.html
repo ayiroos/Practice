@@ -2,19 +2,42 @@
 
 <head>
     <title>Upload file</title>
+
+    <style>
+            .button {
+                background-color: rgb(184, 57, 74);
+                border: none;
+                color: white;
+                padding: 5px 10px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 15px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+            .w3-xxlarge{
+                font-size:36px!important;
+                color: black}
+
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script>
 
+        var hostURL = "http://localhost:9000";
+
         async function uploadFile() {
 
+            document.getElementById("spinner").style.display= "block";
             var input = document.getElementById("selectedFile");
 
             var folderPath = document.getElementById("uploadFolderLocation").value;
 
             if (!folderPath) {
+                document.getElementById("spinner").style.display= "none";
                 window.alert("Please specify folder path");
                 return;
             }
@@ -22,6 +45,7 @@
             var file = input.files[0];
 
             if (!file) {
+                document.getElementById("spinner").style.display= "none";
                 window.alert("Please choose a file to upload");
                 return;
             }
@@ -35,7 +59,7 @@
             // await console.log(file);
             // https://staging.cloud-elements.com/elements/api-v2/files
 
-            const response = await fetch(`http://localhost:9000/postFiles?path=${folderPath}`, {
+            const response = await fetch(`${hostURL}/postFiles?path=${folderPath}`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -48,10 +72,11 @@
 
             let statusCode = response.status;
             if (statusCode < 200 || statusCode >= 300) {
+                document.getElementById("spinner").style.display= "none";
                 window.alert(responseJson.message || `Unable to upload the file to specified folder path '${folderPath}'`)
                 return;
             }
-
+            document.getElementById("spinner").style.display= "none";
             window.alert(`File successfully uploaded:\nFile ID is ${responseJson.id}\nFile Path: ${responseJson.path}`)
         }
     </script>
@@ -59,10 +84,12 @@
 
 </head>
 
-<body>
+<body bgcolor="#07bbc7">
 
     <br>
     <div style="text-align:center">
+        
+        <h1>Documents Viewer</h1>
         <a class="w3-xxlarge" href="./index.html">
             <i class="fa fa-home"></i>
         </a>
@@ -71,14 +98,22 @@
     <br>
     <br>
     <div style="text-align:center">
-        <input id="uploadFolderLocation" style="width: 720px" type="text"
-            placeholder="Please enther a absolute file path destinatin to upload the file For example: /test/fileName.ext" />
+        <input id="uploadFolderLocation" type="text" 
+        style="width: 720px; 
+        height: 10px;
+        border-radius: 10px; 
+        border: 2px solid rgb(125, 150, 187);
+        padding: 20px;"
+        placeholder="Please enther a absolute file path destinatin to upload the file For example: /test/fileName.ext" />
         <br>
         <br>
         <input id="selectedFile" type="file" name="myFile"> 
         <br>
         <br>
-        <input type="button" value="Upload" onclick="uploadFile()" />
+        <input type="button" value="Upload" onclick="uploadFile()" class="button" />
+    </div>
+    <div id="spinner" style="display: none; text-align: center" >
+        <img id="imgSpinner" src="./img_spinner.gif" alt="Loading.." width="100px" height="100px" />
     </div>
 </body>
 
